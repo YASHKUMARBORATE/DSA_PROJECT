@@ -1786,7 +1786,7 @@ DoublyCL<int> *dciobj = new DoublyCL<int>();
       dciobj->InsertFirst(51);
     dciobj->InsertFirst(21);
     dciobj->InsertFirst(11);
-
+    
     dciobj->Display();
     iRet = dciobj->Count();
     cout<<"Number of elemensts are : "<<iRet<<endl;
