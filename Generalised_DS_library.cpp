@@ -502,8 +502,250 @@ void DoublyCL<T>::DeleteAtPos(int iPos)
 // Code of Doubly Liear
 //
 /////////////////////////////////////////////////////////////
+template <class T>
+struct nodeDl
+{
+    T data;
+    struct nodeDl<T> *next;
+    struct nodeDl<T> *prev;
+};
 
-    // Add your code here
+template <class T>
+class DoublyLL
+{
+private:
+   struct nodeDl<T> * First;
+    int iCount;
+
+public:
+    DoublyLL();
+
+    void Display();
+    int Count();
+
+    void InsertFirst(T No);
+    void InsertLast(T No);
+    void InsertAtPos(T No, int iPos);
+
+    void DeleteFirst();
+    void DeleteLast();
+    void DeleteAtPos(int iPos);
+};
+
+template <class T>
+DoublyLL<T>::DoublyLL()
+{
+    First = NULL;
+    iCount = 0;
+}
+
+template <class T>
+void DoublyLL<T>::Display()
+{
+   struct nodeDl<T> * temp = NULL;
+
+    temp = First;
+    cout << "\nNULL<=>";
+    while (temp != NULL)
+    {
+        cout << "|" << temp->data << "|<=>";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+
+template <class T>
+int DoublyLL<T>::Count()
+{
+    cout << "\n";
+    return iCount;
+}
+
+template <class T>
+void DoublyLL<T>::InsertFirst(T No)
+{
+   struct nodeDl<T> * newn = NULL;
+
+    newn = new nodeDl<T>;
+
+    newn->data = No;
+    newn->next = NULL;
+    newn->prev = NULL;
+
+    if (First == NULL)
+    {
+        First = newn;
+    }
+    else
+    {
+        newn->next = First;
+        First->prev = newn;
+
+        First = newn;
+    }
+    iCount++;
+}
+
+template <class T>
+void DoublyLL<T>::InsertLast(T No)
+{
+   struct nodeDl<T> *newn = NULL;
+   struct nodeDl<T> * temp = NULL;
+
+    newn = new nodeDl<T>;
+
+    newn->data = No;
+    newn->next = NULL;
+    newn->prev = NULL;
+
+    if (First == NULL)
+    {
+        First = newn;
+    }
+    else
+    {
+        temp = First;
+
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = newn;
+        newn->prev = temp;
+    }
+    iCount++;
+}
+
+template <class T>
+void DoublyLL<T>::InsertAtPos(T No, int iPos)
+{
+ struct nodeDl<T> * newn = NULL;
+ struct nodeDl<T> * temp = NULL;
+    int i = 0;
+
+    newn = new nodeDl<T>;
+
+    newn->data = No;
+    newn->next = NULL;
+    newn->prev = NULL;
+
+    if ((iPos < 1) || (iPos > iCount + 1))
+    {
+        return;
+    }
+    if (iPos == 1)
+    {
+        InsertFirst(No);
+    }
+    else if (iPos == iCount + 1)
+    {
+        InsertLast(No);
+    }
+    else
+    {
+        temp = First;
+
+        for (i = 1; i < iPos - 1; i++)
+        {
+            temp = temp->next;
+        }
+
+        newn->next = temp->next;
+        temp->next->prev = newn;
+
+        temp->next = newn;
+        newn->prev = temp;
+
+        iCount++;
+    }
+}
+
+template <class T>
+void DoublyLL<T>::DeleteFirst()
+{
+    if (First == NULL)
+    {
+        return;
+    }
+    else if (First->next == NULL)
+    {
+        free(First);
+        First = NULL;
+    }
+    else
+    {
+        First = First->next;
+        free(First->prev);
+        First->prev = NULL;
+    }
+    iCount--;
+}
+
+template <class T>
+void DoublyLL<T>::DeleteLast()
+{
+    struct nodeDl<T> * temp = NULL;
+
+    if (First == NULL)
+    {
+        return;
+    }
+    else if (First->next == NULL)
+    {
+        free(First);
+        First = NULL;
+    }
+    else
+    {
+        temp = First;
+
+        while (temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+    iCount--;
+}
+
+template <class T>
+void DoublyLL<T>::DeleteAtPos(int iPos)
+{
+    struct nodeDl<T> * newn = NULL;
+    struct nodeDl<T> * temp = NULL;
+    int i = 0;
+
+    if ((iPos < 1) || (iPos > iCount))
+    {
+        return;
+    }
+    if (iPos == 1)
+    {
+        DeleteFirst();
+    }
+    else if (iPos == iCount)
+    {
+        DeleteLast();
+    }
+    else
+    {
+        temp = First;
+
+        for (i = 1; i < iPos - 1; i++)
+        {
+            temp = temp->next;
+        }
+        temp->next = temp->next->next;
+
+        free(temp->next->prev);
+
+        temp->next->prev = NULL;
+
+        iCount--;
+    }
+}
 
 /////////////////////////////////////////////////////////////
 //
@@ -517,9 +759,6 @@ struct nodeSC
     T data;
     struct nodeSC *next;
 };
-
-// typedef struct node<T> NODE;
-// typedef struct node<T> *PNODE;
 
 template <class T>
 class SinglyCL
@@ -1303,8 +1542,243 @@ int main()
 
       cout << "Number of elements are:  " << iRet << "\n" ;
 
+       // DoubleLL of Integer
+
+       cout<<"--------------Implementaion Doubly Liner Linkedlist --------------\n";
+
+    cout<<"-------------- Doubly linear LinkdList of Integers --------------\n";
+    int iret = 0;
+    DoublyLL<int> *Dliobj = new DoublyLL<int>();
+    cout<<"\nInsert First ";
+    Dliobj->InsertFirst(101);
+    Dliobj->InsertFirst(51);
+    Dliobj->InsertFirst(21);
+    Dliobj->InsertFirst(11);
+
+     Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert Last ";
+    Dliobj->InsertLast(111);
+    Dliobj->InsertLast(121);
+    Dliobj->InsertLast(151);
+    Dliobj->InsertLast(201);
+
+     Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert At Pos ";
+    Dliobj->InsertAtPos(105, 5);
+
+     Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete First ";
+    Dliobj->DeleteFirst();
+
+     Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete last ";
+    Dliobj->DeleteLast();
+
+     Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete At Pos ";
+    Dliobj->DeleteAtPos(5);
+
+    Dliobj->Display();
+    iret = Dliobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    // DoublyLL of Float
+        cout<<"\n-------------- Doubly linear LinkdList of Float --------------\n";
+// int iret = 0;
+    DoublyLL<float> *Dlfobj = new DoublyLL<float>();
+    cout<<"\nInsert First ";
+    Dlfobj->InsertFirst(101.34f);
+    Dlfobj->InsertFirst(51.3f);
+    Dlfobj->InsertFirst(21.93f);
+    Dlfobj->InsertFirst(11.09f);
+
+     Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert Last ";
+    Dlfobj->InsertLast(111.12f);
+    Dlfobj->InsertLast(121.65f);
+    Dlfobj->InsertLast(151.983f);
+    Dlfobj->InsertLast(201.23f);
+
+     Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert At Pos ";
+    Dlfobj->InsertAtPos(105.098f, 5);
+
+     Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete First ";
+    Dlfobj->DeleteFirst();
+
+     Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete last ";
+    Dlfobj->DeleteLast();
+
+     Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete At Pos ";
+    Dlfobj->DeleteAtPos(5);
+
+    Dlfobj->Display();
+    iret = Dlfobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+      // DoublyLL of Double
+        cout<<"\n-------------- Doubly linear LinkdList of Double --------------\n";
+  DoublyLL<double> *Dldobj = new DoublyLL<double>();
+    cout<<"\nInsert First ";
+    Dldobj->InsertFirst(101.342);
+    Dldobj->InsertFirst(51.3976);
+    Dldobj->InsertFirst(21.9356);
+    Dldobj->InsertFirst(11.093679);
+
+     Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert Last ";
+    Dldobj->InsertLast(111.129);
+    Dldobj->InsertLast(121.65238);
+    Dldobj->InsertLast(151.9839);
+    Dldobj->InsertLast(201.23239098);
+
+     Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert At Pos ";
+    Dldobj->InsertAtPos(105.098239, 5);
+
+     Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete First ";
+    Dldobj->DeleteFirst();
+
+     Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete last ";
+    Dldobj->DeleteLast();
+
+     Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete At Pos ";
+    Dldobj->DeleteAtPos(5);
+
+    Dldobj->Display();
+    iret = Dldobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+ // DoublyLL of char
+        cout<<"\n-------------- Doubly linear LinkdList of Character --------------\n";
+
+          DoublyLL<char> *Dlcobj = new DoublyLL<char>();
+    cout<<"\nInsert First ";
+    Dlcobj->InsertFirst('A');
+    Dlcobj->InsertFirst('M');
+    Dlcobj->InsertFirst('U');
+    Dlcobj->InsertFirst('P');
+
+     Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert Last ";
+    Dlcobj->InsertLast('B');
+    Dlcobj->InsertLast('R');
+    Dlcobj->InsertLast('U');
+    Dlcobj->InsertLast('D');
+
+     Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nInsert At Pos ";
+    Dlcobj->InsertAtPos('Y', 5);
+
+     Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete First ";
+    Dlcobj->DeleteFirst();
+
+     Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete last ";
+    Dlcobj->DeleteLast();
+
+     Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
+
+    cout<<"\nDelete At Pos ";
+    Dlcobj->DeleteAtPos(5);
+
+    Dlcobj->Display();
+    iret = Dlcobj->Count();
+
+    cout << "number of elements in linklist is : " << iret;
 
 // DoublyCL LinkdList
+       cout<<"\n--------------Implementaion DoublyCircular Linkedlist --------------\n";
+
     cout<<"-------------- DoublyCircular LinkdList of Integers --------------\n";
 
 DoublyCL<int> *dciobj = new DoublyCL<int>();
